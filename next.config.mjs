@@ -9,4 +9,8 @@ nextConfig.webpack = (config, context) => {
   return config;
 };
 
+nextConfig.images = {
+  domains: ['images.unsplash.com']
+}
+
 export default nextConfig;
