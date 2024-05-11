@@ -1,12 +1,7 @@
 import "@styles/globals.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-import Image from "next/image";
 import Logo from "@assets/icons/Logo.svg";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,9 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <header>
-          <div>
+          <div className="h-full">
             <div className="w-full h-full flex flex-col justify-center content-center flex-wrap">
               <Logo />
             </div>
