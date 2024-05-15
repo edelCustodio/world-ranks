@@ -64,7 +64,7 @@ const Dropdown = ({
         type='button'
         onClick={() => setIsOpen(!isOpen)}
         className={classNames(
-          'flex justify-between items-center gap-5 w-full py-2 px-4 bg-[#1B1D1F] rounded-xl border-2 border-[#6C727F] text-[#D2D5DA]',
+          'flex justify-between items-center gap-5 w-full py-2 px-4 bg-[#1B1D1F] rounded-xl border-2 border-[#282B30] text-[#D2D5DA]',
           style
         )}
       >
