@@ -10,6 +10,8 @@ import { IChip, IChips } from "@components/chips/chip-model";
 import { Grid } from "@components/grid/Grid";
 import { countryColumns } from "@models/country-grid-helper";
 import { Country } from "@models/country";
+import { Checkbox } from "@components/ui/checkbox";
+import CheckBox from "@components/checkbox/CheckBox";
 
 export default function Home() {
   const [dropDownData, setDropDownData] = useState([
@@ -78,6 +80,8 @@ export default function Home() {
 
   const handleSelect = () => {};
 
+  const handleStatusEvent = () => {};
+
   return (
     <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
       <CardContent className="grid grid-cols-12 gap-4">
@@ -100,6 +104,14 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-3">
             <label className="text-[#6C727F] text-xs">Status</label>
+            <CheckBox
+              text="Member of the United Nations"
+              checkedEvent={handleStatusEvent}
+            />
+            <CheckBox
+              text="Independent"
+              checkedEvent={handleStatusEvent}
+            />
           </div>
         </section>
         <section className="lg:col-span-9 sm:col-span-8 mt-6">
