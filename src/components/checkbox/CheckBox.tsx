@@ -2,15 +2,16 @@ import React, { useId } from "react";
 import { ICheckBox } from "./checkbox-model";
 
 const CheckBox = (check: ICheckBox) => {
-
-    const checkBoxId = useId();
+  const checkBoxId = useId();
   return (
     <div className="flex items-center mb-4 gap-2">
       <input
         id={checkBoxId}
         type="checkbox"
         checked={check.value}
-        onChange={(event) => check.checkedEvent && check.checkedEvent(event.target.checked)}
+        onChange={(event) =>
+          check.checkedEvent && check.checkedEvent(event.target.checked)
+        }
         className="appearance-none w-4 h-4 border-2 border-blue-500 rounded-sm bg-white"
       />
       <label

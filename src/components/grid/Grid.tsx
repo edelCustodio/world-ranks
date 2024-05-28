@@ -5,6 +5,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -15,6 +17,7 @@ import {
   TableRow,
 } from "@components/ui/table";
 import TextBox from "@components/TextBox";
+import { useState } from "react";
 
 interface GridProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -25,10 +28,17 @@ export function Grid<TData, TValue>({
   columns,
   data,
 }: GridProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
   });
 
   return (
