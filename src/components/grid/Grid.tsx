@@ -22,12 +22,7 @@ import {
 import TextBox from "@components/TextBox";
 import { useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
-
-interface GridProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  filterRegion?: string[];
-}
+import { GridProps } from "./model/grid";
 
 export function Grid<TData, TValue>({
   columns,
@@ -58,7 +53,6 @@ export function Grid<TData, TValue>({
 
   const searchText = (text: string) => {
     console.log(text);
-    table.getColumn("region")?.setFilterValue(["Asia", "Americas"]);
   };
 
   return (

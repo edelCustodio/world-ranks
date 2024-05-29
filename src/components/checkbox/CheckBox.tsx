@@ -8,7 +8,6 @@ const CheckBox = (check: ICheckBox) => {
       <input
         id={checkBoxId}
         type="checkbox"
-        checked={check.value}
         onChange={(event) =>
           check.checkedEvent && check.checkedEvent(event.target.checked)
         }

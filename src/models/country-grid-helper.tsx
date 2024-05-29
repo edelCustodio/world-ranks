@@ -3,16 +3,44 @@ import { Country, Flag } from "./country";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { multiSelectFilter } from "@components/grid/helper";
+import { GridFilter } from "@components/grid/model/grid";
 
-// Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<Country> = (
+const regionColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filterValue: string[]
+  filters: GridFilter[]
 ) => {
-  if (filterValue.length === 0) return true;
-  return filterValue.includes(row.original.region.toLowerCase());
+  const regionFilter = filters.filter((f) => f.filterBy === columnId)[0];
+
+  if (!regionFilter) return true;
+
+  if (regionFilter.value.length === 0) return true;
+
+  return regionFilter.value.includes(row.original.region.toLowerCase());
+};
+
+const unMemberColumnFilterFn: FilterFn<Country> = (
+  row: Row<Country>,
+  columnId: string,
+  filters: GridFilter[]
+) => {
+  const filter = filters.filter((f) => f.filterBy === columnId)[0];
+
+  if (!filter) return true;
+
+  return row.original.unMember === filter.value;
+};
+
+const independentColumnFilterFn: FilterFn<Country> = (
+  row: Row<Country>,
+  columnId: string,
+  filters: GridFilter[]
+) => {
+  const filter = filters.filter((f) => f.filterBy === columnId)[0];
+
+  if (!filter) return true;
+
+  return row.original.independent === filter.value;
 };
 
 export const countryColumns: ColumnDef<Country>[] = [
@@ -71,6 +99,18 @@ export const countryColumns: ColumnDef<Country>[] = [
   {
     accessorKey: "region",
     header: "Region",
-    filterFn: multiColumnFilterFn,
+    filterFn: regionColumnFilterFn,
+  },
+  {
+    accessorKey: "unMember",
+    header: "",
+    filterFn: unMemberColumnFilterFn,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "independent",
+    header: "",
+    filterFn: independentColumnFilterFn,
+    enableHiding: true,
   },
 ];

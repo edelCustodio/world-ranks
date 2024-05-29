@@ -4,8 +4,13 @@ export type Country = {
   flags: Flag;
   name: Name;
   region: string;
+  subregion: string;
   area: number;
   population: number;
+  cca3: string;
+  independent: boolean;
+  unMember: boolean;
+  borders: string[];
 };
 
 export type Flag = {
@@ -28,5 +33,3 @@ type Ron = {
   common: string;
   official: string;
 };
-
-

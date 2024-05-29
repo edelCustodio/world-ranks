@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 
 import TextBox from "@components/TextBox";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Dropdown from "@components/dropdown/DropDown";
 import Chips from "@components/chips/Chips";
 import { IChip, IChips } from "@components/chips/chip-model";
@@ -12,6 +12,7 @@ import { countryColumns } from "@models/country-grid-helper";
 import { Country } from "@models/country";
 import { Checkbox } from "@components/ui/checkbox";
 import CheckBox from "@components/checkbox/CheckBox";
+import { GridFilter } from "@components/grid/model/grid";
 
 export default function Home() {
   const [dropDownData, setDropDownData] = useState([
@@ -34,7 +35,7 @@ export default function Home() {
   ]);
 
   const [countries, setCountries] = useState<Country[]>([]);
-  const [filterRegion, setFilterRegion] = useState<string[]>([]);
+  const [filters, setFilters] = useState<GridFilter[]>([]);
 
   const chips = [
     {
@@ -66,7 +67,7 @@ export default function Home() {
   useEffect(() => {
     const getCountries = async () => {
       const allCountries = await fetch(
-        "https://restcountries.com/v3.1/all?fields=name,region,area,flags,population",
+        "https://restcountries.com/v3.1/all?fields=name,region,area,flags,population,independent,unMember,subregion,borders,cca3",
         { method: "GET" }
       );
       const json = (await allCountries.json()) as Country[];
@@ -83,10 +84,25 @@ export default function Home() {
 
   const handleStatusEvent = () => {};
 
-  const handleChipsEvent = (chips: IChip[]) => {
-    console.log(chips);
-    setFilterRegion(chips.map((c) => (c.value as string).toLowerCase()));
-  };
+  const handleChipsEvent = useCallback(
+    (chips: IChip[]) => {
+      console.log(chips);
+      let filterRegion: GridFilter = {
+        filterBy: "region",
+        value: chips.map((c) => (c.value as string).toLowerCase()),
+      };
+
+      const filtersUpdate =
+        filters.length > 0
+          ? filters.map((s) =>
+              s.filterBy === filterRegion.filterBy ? filterRegion : s
+            )
+          : [...filters, filterRegion];
+
+      setFilters(filtersUpdate);
+    },
+    [filters]
+  );
 
   return (
     <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
@@ -122,7 +138,7 @@ export default function Home() {
           <Grid
             columns={countryColumns}
             data={countries}
-            filterRegion={filterRegion}
+            filterRegion={filters}
           />
         </section>
       </CardContent>

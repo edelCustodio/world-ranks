@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import Chip from "./Chip";
 import { IChip, IChips } from "./chip-model";
 
-const Chips = (chipsParam: IChips) => {
+const Chips = ({ label, chips: chipsData, chipsSelected }: IChips) => {
   const [chips, setChips] = useState<IChip[]>([]);
 
-  useEffect(() => {}, [chips]);
+  useEffect(() => {
+    console.log("Aqui");
+    chipsSelected && chipsSelected(chips);
+  }, [chips]);
 
   const chipSelected = (chip: IChip) => {
     console.log(chip);
@@ -19,18 +22,17 @@ const Chips = (chipsParam: IChips) => {
     }
 
     setChips(chipsUpdated);
-    chipsParam.chipsSelected && chipsParam.chipsSelected(chipsUpdated);
   };
 
   return (
     <section className="flex flex-col ">
       <div>
-        <label className="text-[#6C727F] text-xs">{chipsParam.label}</label>
+        <label className="text-[#6C727F] text-xs">{label}</label>
       </div>
 
       <div className="flex flex-row gap-4 flex-wrap">
-        {chipsParam.chips.length > 0 &&
-          chipsParam.chips.map((chip: IChip, index: number) => (
+        {chipsData.length > 0 &&
+          chipsData.map((chip: IChip, index: number) => (
             <Chip
               key={index}
               text={chip.text}
