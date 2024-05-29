@@ -10,7 +10,6 @@ const Chips = (chipsParam: IChips) => {
   useEffect(() => {}, [chips]);
 
   const chipSelected = (chip: IChip) => {
-    console.log(chip);
     let chipsUpdated: IChip[] = [];
     if (!chip.active) {
       chipsUpdated = chips.filter((c) => c.value !== chip.value);

@@ -86,7 +86,6 @@ export default function Home() {
 
   const handleChipsEvent = useCallback(
     (chips: IChip[]) => {
-      console.log(chips);
       let filterRegion: GridFilter = {
         filterBy: "region",
         value: chips.map((c) => (c.value as string).toLowerCase()),
