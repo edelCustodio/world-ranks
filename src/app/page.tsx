@@ -34,6 +34,7 @@ export default function Home() {
   ]);
 
   const [countries, setCountries] = useState<Country[]>([]);
+  const [filterRegion, setFilterRegion] = useState<string[]>([]);
 
   const chips = [
     {
@@ -82,6 +83,11 @@ export default function Home() {
 
   const handleStatusEvent = () => {};
 
+  const handleChipsEvent = (chips: IChip[]) => {
+    console.log(chips);
+    setFilterRegion(chips.map((c) => (c.value as string).toLowerCase()));
+  };
+
   return (
     <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
       <CardContent className="grid grid-cols-12 gap-4">
@@ -98,24 +104,26 @@ export default function Home() {
               onSelect={handleSelect}
             />
           </div>
-          <div className="flex flex-col gap-3">
-            <label className="text-[#6C727F] text-xs">Region</label>
-            <Chips chips={chips} />
-          </div>
+          <Chips
+            chips={chips}
+            label="Region"
+            chipsSelected={handleChipsEvent}
+          />
           <div className="flex flex-col gap-3">
             <label className="text-[#6C727F] text-xs">Status</label>
             <CheckBox
               text="Member of the United Nations"
               checkedEvent={handleStatusEvent}
             />
-            <CheckBox
-              text="Independent"
-              checkedEvent={handleStatusEvent}
-            />
+            <CheckBox text="Independent" checkedEvent={handleStatusEvent} />
           </div>
         </section>
         <section className="lg:col-span-9 sm:col-span-8 mt-6">
-          <Grid columns={countryColumns} data={countries} />
+          <Grid
+            columns={countryColumns}
+            data={countries}
+            filterRegion={filterRegion}
+          />
         </section>
       </CardContent>
     </Card>

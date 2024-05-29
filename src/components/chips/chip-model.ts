@@ -1,9 +1,12 @@
 export interface IChip {
-    text: string;
-    value: string | number;
-    chipSelected?: (chip: IChip) => void
+  text: string;
+  value: any;
+  active?: boolean;
+  chipSelected?: (chip: IChip) => void;
 }
 
 export interface IChips {
-    chips: IChip[];
+  chips: IChip[];
+  label: string;
+  chipsSelected?: (chips: IChip[]) => void;
 }

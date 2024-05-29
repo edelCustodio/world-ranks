@@ -8,6 +8,8 @@ import {
   SortingState,
   getSortedRowModel,
   getPaginationRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -18,19 +20,22 @@ import {
   TableRow,
 } from "@components/ui/table";
 import TextBox from "@components/TextBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 
 interface GridProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filterRegion?: string[];
 }
 
 export function Grid<TData, TValue>({
   columns,
   data,
+  filterRegion,
 }: GridProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -39,15 +44,27 @@ export function Grid<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
+
+  useEffect(() => {
+    table.getColumn("region")?.setFilterValue(filterRegion);
+  }, [filterRegion, table]);
+
+  const searchText = (text: string) => {
+    console.log(text);
+    table.getColumn("region")?.setFilterValue(["Asia", "Americas"]);
+  };
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row-reverse">
-        <TextBox />
+        <TextBox changedEvent={searchText} />
       </div>
       <Table>
         <TableHeader className="text-[#6C727F]">

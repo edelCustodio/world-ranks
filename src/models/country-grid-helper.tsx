@@ -1,8 +1,19 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, FilterFn, Row } from "@tanstack/react-table";
 import { Country, Flag } from "./country";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { multiSelectFilter } from "@components/grid/helper";
+
+// Custom filter function for multi-column searching
+const multiColumnFilterFn: FilterFn<Country> = (
+  row: Row<Country>,
+  columnId: string,
+  filterValue: string[]
+) => {
+  if (filterValue.length === 0) return true;
+  return filterValue.includes(row.original.region.toLowerCase());
+};
 
 export const countryColumns: ColumnDef<Country>[] = [
   {
@@ -60,5 +71,6 @@ export const countryColumns: ColumnDef<Country>[] = [
   {
     accessorKey: "region",
     header: "Region",
+    filterFn: multiColumnFilterFn,
   },
 ];
