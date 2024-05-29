@@ -105,12 +105,12 @@ export const countryColumns: ColumnDef<Country>[] = [
     accessorKey: "unMember",
     header: "",
     filterFn: unMemberColumnFilterFn,
-    enableHiding: true,
+    enableHiding: false,
   },
   {
     accessorKey: "independent",
     header: "",
     filterFn: independentColumnFilterFn,
-    enableHiding: true,
+    enableHiding: false,
   },
 ];
