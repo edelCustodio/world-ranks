@@ -99,18 +99,19 @@ export const countryColumns: ColumnDef<Country>[] = [
   {
     accessorKey: "region",
     header: "Region",
+    enableColumnFilter: true,
     filterFn: regionColumnFilterFn,
   },
   {
     accessorKey: "unMember",
     header: "",
+    enableColumnFilter: true,
     filterFn: unMemberColumnFilterFn,
-    enableHiding: false,
   },
   {
     accessorKey: "independent",
     header: "",
+    enableColumnFilter: true,
     filterFn: independentColumnFilterFn,
-    enableHiding: false,
   },
 ];

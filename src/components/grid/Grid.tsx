@@ -28,7 +28,8 @@ import { GridProps } from "./model/grid";
 export function Grid<TData, TValue>({
   columns,
   data,
-  filterRegion,
+  filters,
+  setTotalRowsFiltered,
 }: GridProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -55,8 +56,15 @@ export function Grid<TData, TValue>({
   });
 
   useEffect(() => {
-    table.getColumn("region")?.setFilterValue(filterRegion);
-  }, [filterRegion, table]);
+    table.getColumn("region")?.setFilterValue(filters);
+    table.getColumn("unMember")?.setFilterValue(filters);
+    table.getColumn("independent")?.setFilterValue(filters);
+  }, [filters, table]);
+
+  useEffect(() => {
+    const total = table.getFilteredRowModel().rows.length;
+    setTotalRowsFiltered(total);
+  }, [table, setTotalRowsFiltered]);
 
   const searchText = (text: string) => {
     console.log(text);

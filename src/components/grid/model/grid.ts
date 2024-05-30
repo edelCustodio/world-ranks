@@ -3,7 +3,8 @@ import { ColumnDef } from "@tanstack/react-table";
 export interface GridProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filterRegion?: GridFilter[];
+  filters?: GridFilter[];
+  setTotalRowsFiltered: (total: number) => void;
 }
 
 export interface GridFilter {

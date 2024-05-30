@@ -36,6 +36,7 @@ export default function Home() {
 
   const [countries, setCountries] = useState<Country[]>([]);
   const [filters, setFilters] = useState<GridFilter[]>([]);
+  const [totalRows, setTotalRows] = useState(0);
 
   const chips = [
     {
@@ -82,33 +83,48 @@ export default function Home() {
 
   const handleSelect = () => {};
 
-  const handleStatusEvent = () => {};
+  const handleStatusEvent = (name: string, value: boolean) => {
+    let statusFilter: GridFilter = {
+      filterBy: name,
+      value,
+    };
 
-  const handleChipsEvent = useCallback(
-    (chips: IChip[]) => {
-      let filterRegion: GridFilter = {
-        filterBy: "region",
-        value: chips.map((c) => (c.value as string).toLowerCase()),
-      };
+    let filtersUpdate: any[] = [];
 
-      const filtersUpdate =
-        filters.length > 0
-          ? filters.map((s) =>
-              s.filterBy === filterRegion.filterBy ? filterRegion : s
-            )
-          : [...filters, filterRegion];
+    let filter = filters.filter((f) => f.filterBy === name)[0];
 
-      setFilters(filtersUpdate);
-    },
-    [filters]
-  );
+    if (filter) {
+      filter.value = value;
+      filtersUpdate = [...filters];
+    } else {
+      filtersUpdate = [...filters, statusFilter];
+    }
+
+    setFilters(filtersUpdate);
+  };
+
+  const handleChipsEvent = (chips: IChip[]) => {
+    let filterRegion: GridFilter = {
+      filterBy: "region",
+      value: chips.map((c) => (c.value as string).toLowerCase()),
+    };
+
+    const filtersUpdate =
+      filters.length > 0
+        ? filters.map((s) =>
+            s.filterBy === filterRegion.filterBy ? filterRegion : s
+          )
+        : [...filters, filterRegion];
+
+    setFilters(filtersUpdate);
+  };
 
   return (
     <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
       <CardContent className="grid grid-cols-12 gap-4">
         <section className="flex flex-col gap-10 lg:col-span-3 m-2 p-2 sm:col-span-4 mt-6">
           <div className="text-[#6C727F] text-lg flex justify-between items-center">
-            <span>Found 234 countries </span>
+            <span>Found {totalRows} countries </span>
           </div>
           <div className="flex flex-col gap-3">
             <label className="text-[#6C727F] text-xs">Sort by</label>
@@ -128,16 +144,22 @@ export default function Home() {
             <label className="text-[#6C727F] text-xs">Status</label>
             <CheckBox
               text="Member of the United Nations"
+              name="unMember"
               checkedEvent={handleStatusEvent}
             />
-            <CheckBox text="Independent" checkedEvent={handleStatusEvent} />
+            <CheckBox
+              text="Independent"
+              name="independent"
+              checkedEvent={handleStatusEvent}
+            />
           </div>
         </section>
         <section className="lg:col-span-9 sm:col-span-8 mt-6">
           <Grid
             columns={countryColumns}
             data={countries}
-            filterRegion={filters}
+            filters={filters}
+            setTotalRowsFiltered={setTotalRows}
           />
         </section>
       </CardContent>

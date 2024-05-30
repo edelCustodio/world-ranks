@@ -1,5 +1,6 @@
-export interface ICheckBox { 
-    text: string;
-    value?: boolean;
-    checkedEvent?: (value: boolean) => void;
+export interface ICheckBox {
+  text: string;
+  name: string;
+  value?: boolean;
+  checkedEvent: (name: string, value: boolean) => void;
 }
