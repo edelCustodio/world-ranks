@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/countries",
+        permanent: true,
+      },
+    ];
+  },
+};
 
 nextConfig.webpack = (config, context) => {
   config.module.rules.push({
@@ -10,7 +20,7 @@ nextConfig.webpack = (config, context) => {
 };
 
 nextConfig.images = {
-  domains: ['images.unsplash.com']
-}
+  domains: ["images.unsplash.com"],
+};
 
 export default nextConfig;

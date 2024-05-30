@@ -2,6 +2,7 @@ import "@styles/globals.css";
 
 import type { Metadata } from "next";
 import Logo from "@assets/icons/Logo.svg";
+import { Card, CardContent } from "@components/ui/card";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +26,11 @@ export default function RootLayout({
         </header>
         <nav></nav>
         <main className="flex flex-row justify-center content-center">
-          {children}
+          <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
+            <CardContent className="grid grid-cols-12 gap-4">
+              {children}
+            </CardContent>
+          </Card>
         </main>
       </body>
     </html>
