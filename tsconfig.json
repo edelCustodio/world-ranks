@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,14 +23,34 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@assets/*": ["public/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@models/*": ["src/models/*"],
-      "@styles/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@assets/*": [
+        "public/assets/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
     }
   },
-  "include": ["custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "custom.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

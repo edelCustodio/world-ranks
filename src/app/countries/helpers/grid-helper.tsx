@@ -1,5 +1,5 @@
 import { ColumnDef, FilterFn, Row } from "@tanstack/react-table";
-import { Country, Flag } from "./country";
+import { Country, Flag } from "../../../models/country";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";

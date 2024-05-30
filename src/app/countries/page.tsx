@@ -8,30 +8,15 @@ import { Grid } from "@components/grid/Grid";
 import { GridFilter } from "@components/grid/model/grid";
 import { Card, CardContent } from "@components/ui/card";
 import { Country } from "@models/country";
-import { countryColumns } from "@models/country-grid-helper";
+
 import React, { useEffect, useState } from "react";
+import { chips, sortByDropdown } from "./helpers/countries";
+import { countryColumns } from "./helpers/grid-helper";
+import { useGetCountries } from "./helpers/countries-hooks";
 
 const Countries = () => {
-  const [dropDownData, setDropDownData] = useState([
-    {
-      id: "name",
-      name: "Name",
-    },
-    {
-      id: "population",
-      name: "Population",
-    },
-    {
-      id: "area",
-      name: "Area",
-    },
-    {
-      id: "region",
-      name: "Region",
-    },
-  ]);
-
-  const [countries, setCountries] = useState<Country[]>([]);
+  const [dropDownData, setDropDownData] = useState(sortByDropdown);
+  const [totalRows, setTotalRows] = useState(0);
   const [filters, setFilters] = useState<GridFilter[]>([
     {
       filterBy: "name_common",
@@ -39,50 +24,20 @@ const Countries = () => {
       value: "",
     },
   ]);
-  const [totalRows, setTotalRows] = useState(0);
 
-  const chips = [
-    {
-      text: "Americas",
-      value: "americas",
-    },
-    {
-      text: "Antartic",
-      value: "antartic",
-    },
-    {
-      text: "Africa",
-      value: "africa",
-    },
-    {
-      text: "Asia",
-      value: "asia",
-    },
-    {
-      text: "Europe",
-      value: "europe",
-    },
-    {
-      text: "Oceania",
-      value: "oceania",
-    },
-  ] as IChip[];
+  const {
+    data: countries,
+    isLoading: isCountriesLoading,
+    isError: isCountriesError,
+  } = useGetCountries();
 
-  useEffect(() => {
-    const getCountries = async () => {
-      const allCountries = await fetch(
-        "https://restcountries.com/v3.1/all?fields=name,region,area,flags,population,independent,unMember,subregion,borders,cca3",
-        { method: "GET" }
-      );
-      const json = (await allCountries.json()) as Country[];
-      const sortCountries = json.sort((a, b) =>
-        a.population > b.population ? -1 : 1
-      );
-      setCountries(sortCountries);
-    };
+  if (isCountriesLoading) {
+    return <div>Loading...</div>;
+  }
 
-    getCountries();
-  }, []);
+  if (isCountriesError) {
+    return <div>Error fetching user</div>;
+  }
 
   const handleSelect = () => {};
 
@@ -164,12 +119,15 @@ const Countries = () => {
           </div>
         </section>
         <section className="lg:col-span-9 sm:col-span-8 mt-6">
-          <Grid
-            columns={countryColumns}
-            data={countries}
-            filters={filters}
-            setTotalRowsFiltered={setTotalRows}
-          />
+          {countries && (
+            <Grid
+              columns={countryColumns}
+              data={countries}
+              isLoading={isCountriesLoading}
+              filters={filters}
+              setTotalRowsFiltered={setTotalRows}
+            />
+          )}
         </section>
       </CardContent>
     </Card>

@@ -11,6 +11,13 @@ const nextConfig = {
   },
 };
 
+/**
+ * Environment variables
+ */
+nextConfig.env = {
+  REST_COUNTRIES: process.env.REST_COUNTRIES,
+};
+
 nextConfig.webpack = (config, context) => {
   config.module.rules.push({
     test: /\.svg$/,
