@@ -35,7 +35,13 @@ export default function Home() {
   ]);
 
   const [countries, setCountries] = useState<Country[]>([]);
-  const [filters, setFilters] = useState<GridFilter[]>([]);
+  const [filters, setFilters] = useState<GridFilter[]>([
+    {
+      filterBy: "name_common",
+      usedBy: "search bar",
+      value: "",
+    },
+  ]);
   const [totalRows, setTotalRows] = useState(0);
 
   const chips = [
@@ -87,6 +93,7 @@ export default function Home() {
     let statusFilter: GridFilter = {
       filterBy: name,
       value,
+      usedBy: "column",
     };
 
     let filtersUpdate: any[] = [];
@@ -104,19 +111,24 @@ export default function Home() {
   };
 
   const handleChipsEvent = (chips: IChip[]) => {
-    let filterRegion: GridFilter = {
+    let regionFilter: GridFilter = {
       filterBy: "region",
       value: chips.map((c) => (c.value as string).toLowerCase()),
+      usedBy: "column",
     };
 
-    const filtersUpdate =
-      filters.length > 0
-        ? filters.map((s) =>
-            s.filterBy === filterRegion.filterBy ? filterRegion : s
-          )
-        : [...filters, filterRegion];
+    let filtersUpdated: GridFilter[] = [];
+    let filter = filters.filter((f) => f.filterBy === regionFilter.filterBy)[0];
 
-    setFilters(filtersUpdate);
+    if (filter) {
+      filtersUpdated = filters.map((s) =>
+        s.filterBy === regionFilter.filterBy ? regionFilter : s
+      );
+    } else {
+      filtersUpdated = [...filters, regionFilter];
+    }
+
+    setFilters(filtersUpdated);
   };
 
   return (

@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "@components/ui/table";
 import TextBox from "@components/TextBox";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@components/ui/button";
 import { GridProps } from "./model/grid";
 
@@ -55,11 +55,20 @@ export function Grid<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
   });
 
+  const searchBarFilter = useMemo(() => {
+    return (filters || []).filter((f) => f.usedBy === "search bar");
+  }, [filters]);
+
+  const columnFilter = useMemo(() => {
+    return (filters || []).filter((f) => f.usedBy === "column");
+  }, [filters]);
+
   useEffect(() => {
-    table.getColumn("region")?.setFilterValue(filters);
-    table.getColumn("unMember")?.setFilterValue(filters);
-    table.getColumn("independent")?.setFilterValue(filters);
-  }, [filters, table]);
+    for (let index = 0; index < columnFilter.length; index++) {
+      const filter = columnFilter[index];
+      table.getColumn(filter.filterBy)?.setFilterValue(filter);
+    }
+  }, [columnFilter, table]);
 
   useEffect(() => {
     const total = table.getFilteredRowModel().rows.length;
@@ -67,7 +76,10 @@ export function Grid<TData, TValue>({
   }, [table, setTotalRowsFiltered]);
 
   const searchText = (text: string) => {
-    console.log(text);
+    for (let index = 0; index < searchBarFilter.length; index++) {
+      const filter = searchBarFilter[index];
+      table.getColumn(filter.filterBy)?.setFilterValue(text);
+    }
   };
 
   return (

@@ -21,4 +21,6 @@ export interface GridFilter {
    * .... etc.
    */
   value: any;
+
+  usedBy: "column" | "search bar";
 }

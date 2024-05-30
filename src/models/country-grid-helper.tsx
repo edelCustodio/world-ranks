@@ -8,24 +8,20 @@ import { GridFilter } from "@components/grid/model/grid";
 const regionColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filters: GridFilter[]
+  filter: GridFilter
 ) => {
-  const regionFilter = filters.filter((f) => f.filterBy === columnId)[0];
+  if (!filter) return true;
 
-  if (!regionFilter) return true;
+  if (filter.value.length === 0) return true;
 
-  if (regionFilter.value.length === 0) return true;
-
-  return regionFilter.value.includes(row.original.region.toLowerCase());
+  return filter.value.includes(row.original.region.toLowerCase());
 };
 
 const unMemberColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filters: GridFilter[]
+  filter: GridFilter
 ) => {
-  const filter = filters.filter((f) => f.filterBy === columnId)[0];
-
   if (!filter) return true;
 
   return row.original.unMember === filter.value;
@@ -34,13 +30,21 @@ const unMemberColumnFilterFn: FilterFn<Country> = (
 const independentColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filters: GridFilter[]
+  filter: GridFilter
 ) => {
-  const filter = filters.filter((f) => f.filterBy === columnId)[0];
-
   if (!filter) return true;
 
   return row.original.independent === filter.value;
+};
+
+const searchTextColumnFilterFn: FilterFn<Country> = (
+  row: Row<Country>,
+  columnId: string,
+  filterValue: string
+) => {
+  const rowData = `${row.original.name.common.toLowerCase()} ${row.original.region.toLowerCase()} ${row.original.subregion.toLowerCase()}`;
+
+  return rowData.includes(filterValue.toLowerCase());
 };
 
 export const countryColumns: ColumnDef<Country>[] = [
@@ -65,6 +69,7 @@ export const countryColumns: ColumnDef<Country>[] = [
         </Button>
       );
     },
+    filterFn: searchTextColumnFilterFn,
   },
   {
     accessorKey: "population",
@@ -99,19 +104,16 @@ export const countryColumns: ColumnDef<Country>[] = [
   {
     accessorKey: "region",
     header: "Region",
-    enableColumnFilter: true,
     filterFn: regionColumnFilterFn,
   },
   {
     accessorKey: "unMember",
     header: "",
-    enableColumnFilter: true,
     filterFn: unMemberColumnFilterFn,
   },
   {
     accessorKey: "independent",
     header: "",
-    enableColumnFilter: true,
     filterFn: independentColumnFilterFn,
   },
 ];
