@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "@components/ui/table";
 import TextBox from "@components/TextBox";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@components/ui/button";
 import { GridProps } from "./model/grid";
 
@@ -70,11 +70,20 @@ export function Grid<TData, TValue>({
     }
   }, [columnFilter, table]);
 
-  useEffect(() => {
-    const total = table.getFilteredRowModel().rows.length;
-    setTotalRowsFiltered(total);
-  }, [table, setTotalRowsFiltered]);
+  /**
+   * Total rows filtered
+   */
+  const rowModel = table.getFilteredRowModel();
+  const total = useCallback(() => rowModel.rows.length, [rowModel]);
 
+  useEffect(() => {
+    setTotalRowsFiltered(total());
+  }, [total, setTotalRowsFiltered]);
+
+  /**
+   * Search text box function
+   * @param text text to be filtered
+   */
   const searchText = (text: string) => {
     for (let index = 0; index < searchBarFilter.length; index++) {
       const filter = searchBarFilter[index];
