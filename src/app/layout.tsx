@@ -26,11 +26,7 @@ export default function RootLayout({
         </header>
         <nav></nav>
         <main className="flex flex-row justify-center content-center">
-          <Card className="z-[1000px] absolute top-[250px] w-4/5 bg-[#1B1D1F] rounded-xl border-[#282B30]">
-            <CardContent className="grid grid-cols-12 gap-4">
-              {children}
-            </CardContent>
-          </Card>
+          {children}
         </main>
       </body>
     </html>

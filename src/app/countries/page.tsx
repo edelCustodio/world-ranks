@@ -6,6 +6,7 @@ import { IChip } from "@components/chips/chip-model";
 import Dropdown from "@components/dropdown/DropDown";
 import { Grid } from "@components/grid/Grid";
 import { GridFilter } from "@components/grid/model/grid";
+import { Card, CardContent } from "@components/ui/card";
 import { Country } from "@models/country";
 import { countryColumns } from "@models/country-grid-helper";
 import React, { useEffect, useState } from "react";
@@ -128,44 +129,50 @@ const Countries = () => {
   };
 
   return (
-    <>
-      <section className="flex flex-col gap-10 lg:col-span-3 m-2 p-2 sm:col-span-4 mt-6">
-        <div className="text-[#6C727F] text-lg flex justify-between items-center">
-          <span>Found {totalRows} countries </span>
-        </div>
-        <div className="flex flex-col gap-3">
-          <label className="text-[#6C727F] text-xs">Sort by</label>
-          <Dropdown
-            id="columns"
-            title="Columns"
-            data={dropDownData}
-            onSelect={handleSelect}
+    <Card className="z-[1000px] absolute top-[250px] bg-[#1B1D1F] rounded-xl border-[#282B30] w-4/5">
+      <CardContent className="grid grid-cols-12 gap-4">
+        <section className="flex flex-col gap-10 lg:col-span-3 m-2 p-2 sm:col-span-4 mt-6 ">
+          <div className="text-[#6C727F] text-lg flex justify-between items-center">
+            <span>Found {totalRows} countries </span>
+          </div>
+          <div className="flex flex-col gap-3">
+            <label className="text-[#6C727F] text-xs">Sort by</label>
+            <Dropdown
+              id="columns"
+              title="Columns"
+              data={dropDownData}
+              onSelect={handleSelect}
+            />
+          </div>
+          <Chips
+            chips={chips}
+            label="Region"
+            chipsSelected={handleChipsEvent}
           />
-        </div>
-        <Chips chips={chips} label="Region" chipsSelected={handleChipsEvent} />
-        <div className="flex flex-col gap-3">
-          <label className="text-[#6C727F] text-xs">Status</label>
-          <CheckBox
-            text="Member of the United Nations"
-            name="unMember"
-            checkedEvent={handleStatusEvent}
+          <div className="flex flex-col gap-3">
+            <label className="text-[#6C727F] text-xs">Status</label>
+            <CheckBox
+              text="Member of the United Nations"
+              name="unMember"
+              checkedEvent={handleStatusEvent}
+            />
+            <CheckBox
+              text="Independent"
+              name="independent"
+              checkedEvent={handleStatusEvent}
+            />
+          </div>
+        </section>
+        <section className="lg:col-span-9 sm:col-span-8 mt-6">
+          <Grid
+            columns={countryColumns}
+            data={countries}
+            filters={filters}
+            setTotalRowsFiltered={setTotalRows}
           />
-          <CheckBox
-            text="Independent"
-            name="independent"
-            checkedEvent={handleStatusEvent}
-          />
-        </div>
-      </section>
-      <section className="lg:col-span-9 sm:col-span-8 mt-6">
-        <Grid
-          columns={countryColumns}
-          data={countries}
-          filters={filters}
-          setTotalRowsFiltered={setTotalRows}
-        />
-      </section>
-    </>
+        </section>
+      </CardContent>
+    </Card>
   );
 };
 
