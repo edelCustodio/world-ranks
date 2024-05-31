@@ -4,6 +4,14 @@ import Image from "next/image";
 import { Button } from "@components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { GridFilter } from "@components/grid/model/grid";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@components/ui/dropdown-menu";
 
 const regionColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
@@ -99,6 +107,28 @@ export const countryColumns: ColumnDef<Country>[] = [
     accessorKey: "region",
     header: "Region",
     filterFn: regionColumnFilterFn,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const country = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => console.log(country)}>
+              View details
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
   {
     accessorKey: "unMember",
