@@ -12,7 +12,7 @@ import { Country } from "@models/country";
 import React, { useEffect, useState } from "react";
 import { chips, sortByDropdown } from "./helpers/countries";
 import { countryColumns } from "./helpers/grid-helper";
-import { useGetCountries } from "./helpers/countries-hooks";
+import { useGetCountries } from "./hooks/useGetCountries";
 
 const Countries = () => {
   const [dropDownData, setDropDownData] = useState(sortByDropdown);

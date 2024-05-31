@@ -8,33 +8,27 @@ import { GridFilter } from "@components/grid/model/grid";
 const regionColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filter: GridFilter
+  filterValue: string[]
 ) => {
-  if (!filter) return true;
+  if (filterValue.length === 0) return true;
 
-  if (filter.value.length === 0) return true;
-
-  return filter.value.includes(row.original.region.toLowerCase());
+  return filterValue.includes(row.original.region.toLowerCase());
 };
 
 const unMemberColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filter: GridFilter
+  filterValue: boolean
 ) => {
-  if (!filter) return true;
-
-  return row.original.unMember === filter.value;
+  return row.original.unMember === filterValue;
 };
 
 const independentColumnFilterFn: FilterFn<Country> = (
   row: Row<Country>,
   columnId: string,
-  filter: GridFilter
+  filterValue: boolean
 ) => {
-  if (!filter) return true;
-
-  return row.original.independent === filter.value;
+  return row.original.independent === filterValue;
 };
 
 const searchTextColumnFilterFn: FilterFn<Country> = (

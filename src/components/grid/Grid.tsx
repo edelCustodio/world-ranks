@@ -24,6 +24,8 @@ import TextBox from "@components/TextBox";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@components/ui/button";
 import { GridProps } from "./model/grid";
+import useGetTotalRows from "./hooks/useGetTotalRows";
+import useSetFilterToColumn from "./hooks/useSetFilterToColumn";
 
 export function Grid<TData, TValue>({
   columns,
@@ -55,40 +57,21 @@ export function Grid<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
   });
 
-  const searchBarFilter = useMemo(() => {
-    return (filters || []).filter((f) => f.usedBy === "search bar");
-  }, [filters]);
+  useGetTotalRows(table, setTotalRowsFiltered);
+  useSetFilterToColumn(table, filters);
 
-  const columnFilter = useMemo(() => {
-    return (filters || []).filter((f) => f.usedBy === "column");
-  }, [filters]);
-
-  useEffect(() => {
-    for (let index = 0; index < columnFilter.length; index++) {
-      const filter = columnFilter[index];
-      table.getColumn(filter.filterBy)?.setFilterValue(filter);
-    }
-  }, [columnFilter, table]);
-
-  /**
-   * Total rows filtered
-   */
-  const rowModel = table.getFilteredRowModel();
-  const total = useCallback(() => rowModel.rows.length, [rowModel]);
-
-  useEffect(() => {
-    setTotalRowsFiltered(total());
-  }, [total, setTotalRowsFiltered]);
+  const filter = useMemo(
+    () => (filters || []).filter((f) => f.usedBy === "search bar")[0],
+    [filters]
+  );
 
   /**
    * Search text box function
    * @param text text to be filtered
    */
   const searchText = (text: string) => {
-    for (let index = 0; index < searchBarFilter.length; index++) {
-      const filter = searchBarFilter[index];
-      table.getColumn(filter.filterBy)?.setFilterValue(text);
-    }
+    if (!filter) return;
+    table.getColumn(filter.filterBy)?.setFilterValue(text);
   };
 
   return (
