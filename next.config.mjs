@@ -16,6 +16,7 @@ const nextConfig = {
  */
 nextConfig.env = {
   REST_COUNTRIES: process.env.REST_COUNTRIES,
+  COUNTRIES_BODY_FIELDS: process.env.COUNTRIES_BODY_FIELDS,
 };
 
 nextConfig.webpack = (config, context) => {

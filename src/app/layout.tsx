@@ -2,8 +2,7 @@ import "@styles/globals.css";
 
 import type { Metadata } from "next";
 import Logo from "@assets/icons/Logo.svg";
-import { Card, CardContent } from "@components/ui/card";
-import QueryProvider from "@utils/providers/QueryProvider";
+import App from "./App";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,11 +25,7 @@ export default function RootLayout({
           </div>
         </header>
         <nav></nav>
-        <QueryProvider>
-          <main className="flex flex-row justify-center content-center">
-            {children}
-          </main>
-        </QueryProvider>
+        <App>{children}</App>
       </body>
     </html>
   );

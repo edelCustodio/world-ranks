@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type Country = {
+  id: string;
   flags: Flag;
   name: Name;
   region: string;

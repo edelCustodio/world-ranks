@@ -7,12 +7,11 @@ import Dropdown from "@components/dropdown/DropDown";
 import { Grid } from "@components/grid/Grid";
 import { GridFilter } from "@components/grid/model/grid";
 import { Card, CardContent } from "@components/ui/card";
-import { Country } from "@models/country";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { chips, sortByDropdown } from "./helpers/countries";
 import { countryColumns } from "./helpers/grid-helper";
-import { useGetCountries } from "./hooks/useGetCountries";
+import { useGetCountriesQuery } from "src/lib/api/countryApiSlice";
 
 const Countries = () => {
   const [dropDownData, setDropDownData] = useState(sortByDropdown);
@@ -29,7 +28,7 @@ const Countries = () => {
     data: countries,
     isLoading: isCountriesLoading,
     isError: isCountriesError,
-  } = useGetCountries();
+  } = useGetCountriesQuery();
 
   if (isCountriesLoading) {
     return <div>Loading...</div>;
